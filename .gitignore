@@ -1,0 +1,67 @@
+# General
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Editor Directories
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Node / JavaScript
+node_modules/
+jspm_packages/
+.npm
+.eslintcache
+.yarn-integrity
+
+# Backend Specific
+Backend/uploads/
+Backend/vector_store/
+
+# Client Specific
+Client/dist/
+Client/.env*
+!Client/.env.example
