@@ -109,7 +109,6 @@ pdfplumber==0.11.4
 pillow==10.3.0
 platformdirs==4.5.0
 pluggy==1.6.0
-postgrest==0.17.3
 posthog==5.4.0
 proto-plus==1.26.1
 protobuf==6.33.0
