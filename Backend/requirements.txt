@@ -70,9 +70,8 @@ jsonpointer==3.0.0
 jsonschema==4.25.1
 jsonschema-specifications==2025.9.1
 kubernetes==34.1.0
-langchain==0.3.28
-langchain-core==1.0.0
-langchain-chroma==1.0.0
+langchain==0.3.27
+langchain-chroma==0.1.4
 langchain-google-genai==2.1.12
 langchain-openai==0.3.33
 langchain-text-splitters==0.3.11
