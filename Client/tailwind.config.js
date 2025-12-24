@@ -114,6 +114,14 @@ export default {
           from: { transform: "translateX(10px)", opacity: "0" },
           to: { transform: "translateX(0)", opacity: "1" },
         },
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -124,6 +132,7 @@ export default {
         "slide-in-from-bottom": "slide-in-from-bottom 0.2s ease-out",
         "slide-in-from-left": "slide-in-from-left 0.2s ease-out",
         "slide-in-from-right": "slide-in-from-right 0.2s ease-out",
+        aurora: "aurora 60s linear infinite",
       },
     },
   },
