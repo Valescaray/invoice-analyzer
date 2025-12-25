@@ -1,6 +1,6 @@
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { FileUp, Receipt, DollarSign, TrendingUp } from 'lucide-react';
+import { FileUp, Receipt, DollarSign, TrendingUp, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useGetDashboardStatsQuery } from '../api/invoiceApi';
 import { formatCurrency } from '../lib/utils';
@@ -67,7 +67,10 @@ const Dashboard = () => {
             value={stats.total_invoices || 0}
             icon={Receipt}
             colorClass="bg-primary-50 text-primary-600"
-            trend={{ value: '+12%', isPositive: true }}
+            trend={{ 
+              value: `${Math.abs(stats.invoice_trend)}%`, 
+              isPositive: stats.invoice_trend >= 0 
+            }}
           />
         </motion.div>
         <motion.div variants={staggerItem}>
@@ -76,23 +79,29 @@ const Dashboard = () => {
             value={formatCurrency(stats.total_expenses || 0)}
             icon={DollarSign}
             colorClass="bg-success-50 text-success-600"
-            trend={{ value: '+8%', isPositive: true }}
+            trend={{ 
+              value: `${Math.abs(stats.expense_trend)}%`, 
+              isPositive: stats.expense_trend >= 0 
+            }}
           />
         </motion.div>
         <motion.div variants={staggerItem}>
           <StatCard
-            title="This Month (Dec 1-21)"
-            value={formatCurrency(stats.total_expenses * 0.3 || 0)}
+            title="Monthly Expenses"
+            value={formatCurrency(stats.current_month_expenses || 0)}
             icon={TrendingUp}
             colorClass="bg-warning-50 text-warning-600"
-            trend={{ value: '-3%', isPositive: false }}
+            trend={{ 
+              value: `${Math.abs(stats.expense_trend)}%`, 
+              isPositive: stats.expense_trend >= 0 
+            }}
           />
         </motion.div>
         <motion.div variants={staggerItem}>
           <StatCard
-            title="Accuracy"
+            title="Analysis Accuracy"
             value="98.5%"
-            icon={TrendingUp}
+            icon={CheckCircle}
             colorClass="bg-purple-50 text-purple-600"
           />
         </motion.div>

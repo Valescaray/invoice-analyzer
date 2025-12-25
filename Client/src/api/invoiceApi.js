@@ -55,7 +55,7 @@ export const invoiceApi = createApi({
     // Delete invoice
     deleteInvoice: builder.mutation({
       query: (invoiceId) => ({
-        url: `/api/invoices/${invoiceId}`,
+        url: `/api/invoices/${invoiceId}?hard=true`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Invoice', 'Dashboard'],
@@ -80,7 +80,10 @@ export const invoiceApi = createApi({
           expenses_by_currency: (response.expenses_by_currency || []).map(item => ({
             currency: item.currency,
             total: item.sum
-          }))
+          })),
+          invoice_trend: response.invoice_trend || 0,
+          expense_trend: response.expense_trend || 0,
+          current_month_expenses: response.current_month_expenses || 0
         };
       },
       providesTags: ['Dashboard'],

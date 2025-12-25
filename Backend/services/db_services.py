@@ -114,24 +114,63 @@ async def delete_invoice(db: AsyncSession, invoice_id, soft: bool = True):
         stmt = delete(Invoice).where(Invoice.id == invoice_id).returning(Invoice)
         res = await db.execute(stmt)
         await db.commit()
-        deleted = res.fetchone()
-        return invoice_to_dict(deleted[0]) if deleted else None
+        invoice_obj = res.scalars().first()
+        return invoice_to_dict(invoice_obj) if invoice_obj else None
 
 # 4) Dashboard stats
 async def get_dashboard_stats(db: AsyncSession, user_id: Optional[str] = None):
+    from datetime import datetime, timedelta
+    from dateutil.relativedelta import relativedelta
+    
+    # Get current month start and end
+    now = datetime.now()
+    current_month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    next_month = current_month_start + relativedelta(months=1)
+    
+    # Get previous month start and end
+    prev_month_start = current_month_start - relativedelta(months=1)
+    
     # Total invoices count
     total_stmt = select(func.count()).select_from(Invoice)
     sum_stmt = select(func.coalesce(func.sum(Invoice.total_amount), 0))
     vendor_stmt = select(Invoice.vendor_name, func.count().label("count"), func.coalesce(func.sum(Invoice.total_amount), 0).label("sum")).group_by(Invoice.vendor_name).order_by(desc("sum")).limit(10)
 
+    # Current month stats
+    current_month_count_stmt = select(func.count()).select_from(Invoice).where(Invoice.created_at >= current_month_start, Invoice.created_at < next_month)
+    current_month_sum_stmt = select(func.coalesce(func.sum(Invoice.total_amount), 0)).where(Invoice.created_at >= current_month_start, Invoice.created_at < next_month)
+    
+    # Previous month stats
+    prev_month_count_stmt = select(func.count()).select_from(Invoice).where(Invoice.created_at >= prev_month_start, Invoice.created_at < current_month_start)
+    prev_month_sum_stmt = select(func.coalesce(func.sum(Invoice.total_amount), 0)).where(Invoice.created_at >= prev_month_start, Invoice.created_at < current_month_start)
+
     if user_id:
         total_stmt = total_stmt.where(Invoice.user_id == user_id)
         sum_stmt = sum_stmt.where(Invoice.user_id == user_id)
         vendor_stmt = vendor_stmt.where(Invoice.user_id == user_id)
+        current_month_count_stmt = current_month_count_stmt.where(Invoice.user_id == user_id)
+        current_month_sum_stmt = current_month_sum_stmt.where(Invoice.user_id == user_id)
+        prev_month_count_stmt = prev_month_count_stmt.where(Invoice.user_id == user_id)
+        prev_month_sum_stmt = prev_month_sum_stmt.where(Invoice.user_id == user_id)
 
     total = (await db.execute(total_stmt)).scalar_one()
     total_expenses = (await db.execute(sum_stmt)).scalar_one()
     vendor_rows = (await db.execute(vendor_stmt)).all()
+
+    # Get current and previous month data
+    current_month_count = (await db.execute(current_month_count_stmt)).scalar_one()
+    current_month_sum = (await db.execute(current_month_sum_stmt)).scalar_one()
+    prev_month_count = (await db.execute(prev_month_count_stmt)).scalar_one()
+    prev_month_sum = (await db.execute(prev_month_sum_stmt)).scalar_one()
+
+    # Calculate trends (percentage change)
+    invoice_trend = 0.0
+    expense_trend = 0.0
+    
+    if prev_month_count > 0:
+        invoice_trend = ((current_month_count - prev_month_count) / prev_month_count) * 100
+    
+    if prev_month_sum > 0:
+        expense_trend = ((current_month_sum - prev_month_sum) / prev_month_sum) * 100
 
     top_vendors = [{"vendor_name": v[0], "count": int(v[1]), "sum": float(v[2] or 0)} for v in vendor_rows]
 
@@ -147,4 +186,7 @@ async def get_dashboard_stats(db: AsyncSession, user_id: Optional[str] = None):
         "total_expenses": float(total_expenses or 0),
         "top_vendors": top_vendors,
         "expenses_by_currency": expenses_by_currency,
+        "invoice_trend": round(invoice_trend, 1),
+        "expense_trend": round(expense_trend, 1),
+        "current_month_expenses": float(current_month_sum or 0),
     }

@@ -55,3 +55,8 @@ class DashboardStats(BaseModel):
     total_expenses: Optional[float] = 0.0
     top_vendors: List[dict] = []
     expenses_by_currency: List[dict] = []
+    invoice_trend: Optional[float] = 0.0  # percentage change from last month
+    expense_trend: Optional[float] = 0.0  # percentage change from last month
+    current_month_expenses: Optional[float] = 0.0
+
+

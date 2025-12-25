@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import { fadeIn, slideInFromBottom, staggerContainer, staggerItem } from '../lib/animations';
 import { Hero } from '../components/blocks/hero';
 import { AuroraBackground } from '../components/ui/aurora-background';
+import dashboardPreview from '../assets/images/dashboard_preview.png';
+import upwardTrend from '../assets/images/upward_trend_graphic_1766610312927.png';
 
 const Home = () => {
   const features = [
@@ -85,18 +87,13 @@ const Home = () => {
             },
           }}
           preview={
-            <Card className="overflow-hidden shadow-2xl">
+            <Card className="overflow-hidden shadow-2xl border-0">
               <CardContent className="p-0">
-                <div className="aspect-video bg-gradient-to-br from-primary-50 to-purple-50 flex items-center justify-center">
-                  <div className="text-center space-y-4 p-8">
-                    <div className="w-24 h-24 mx-auto rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                      <FileText className="w-12 h-12 text-white" />
-                    </div>
-                    <p className="text-lg font-semibold text-muted-foreground">
-                      Dashboard Preview
-                    </p>
-                  </div>
-                </div>
+                <img 
+                  src={dashboardPreview} 
+                  alt="Dashboard Preview" 
+                  className="w-full h-full object-cover aspect-video"
+                />
               </CardContent>
             </Card>
           }
@@ -172,8 +169,12 @@ const Home = () => {
                     <div className="h-4 bg-muted rounded w-3/4"></div>
                     <div className="h-4 bg-muted rounded w-full"></div>
                     <div className="h-4 bg-muted rounded w-5/6"></div>
-                    <div className="h-32 bg-gradient-to-br from-primary-50 to-purple-50 rounded-lg flex items-center justify-center mt-6">
-                      <TrendingUp className="w-12 h-12 text-primary-600" />
+                    <div className="aspect-video bg-gradient-to-br from-primary-50 to-purple-50 rounded-lg overflow-hidden flex items-center justify-center mt-6">
+                      <img 
+                        src={upwardTrend} 
+                        alt="Upward Trend" 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div className="grid grid-cols-3 gap-4 mt-6">
                       <div className="h-16 bg-muted rounded"></div>

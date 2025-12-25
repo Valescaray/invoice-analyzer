@@ -36,7 +36,7 @@ async def dashboard_stats(db: AsyncSession = Depends(get_db), user_id: Optional[
     return stats
 
 @router.delete("/invoices/{invoice_id}")
-async def remove_invoice(invoice_id: str, hard: bool = Query(False), db: AsyncSession = Depends(get_db)):
+async def remove_invoice(invoice_id: str, hard: bool = Query(True), db: AsyncSession = Depends(get_db)):
     # Basic user check placeholder: ideally compare to current_user.id (when auth implemented)
     deleted = await delete_invoice(db, invoice_id, soft=not hard)
     if not deleted:
