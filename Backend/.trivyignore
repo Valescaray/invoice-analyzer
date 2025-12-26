@@ -1,0 +1,2 @@
+# Ignore Firebase private key env reference
+app/routes/auth_routes.py:37

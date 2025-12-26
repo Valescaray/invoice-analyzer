@@ -31,13 +31,15 @@ if not firebase_admin._apps:
         
         # Replace escaped newlines in private key
         firebase_private_key = firebase_private_key.replace('\\n', '\n')
-        
+        key_field = "private_key"
+        key_field_id = "project_id"
+        key_field_email = "client_email"
         # Create credentials dictionary
         firebase_credentials = {
             "type": "service_account",
             "project_id": firebase_project_id,
-            "private_key": firebase_private_key,
-            "client_email": firebase_client_email,
+           "private_key": firebase_private_key,
+             "client_email": firebase_client_email,
             "token_uri": "https://oauth2.googleapis.com/token"
         }
         

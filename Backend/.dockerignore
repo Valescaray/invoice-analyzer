@@ -10,3 +10,6 @@ dist
 build
 coverage
 *.log
+*.json
+firebase_key.json
+
