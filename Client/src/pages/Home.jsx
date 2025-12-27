@@ -3,7 +3,6 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { FileText, Zap, Shield, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { fadeIn, slideInFromBottom, staggerContainer, staggerItem } from '../lib/animations';
 import { Hero } from '../components/blocks/hero';
 import { AuroraBackground } from '../components/ui/aurora-background';
 import dashboardPreview from '../assets/images/dashboard_preview.png';
